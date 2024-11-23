@@ -15,7 +15,7 @@ keys = [
 
 key_width, key_height = 70, 70
 key_gap = 10
-spacebar_width = 7 * (key_width + key_gap) - key_gap  # Make spacebar span 7 columns
+spacebar_width = 7 * (key_width + key_gap) - key_gap  
 default_color = (200, 0, 0)
 hover_color = (0, 0, 255)
 press_color = (0, 255, 0)
