@@ -9,10 +9,13 @@ mp_drawing = mp.solutions.drawing_utils
 keys = [
     ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
     ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
-    ['Z', 'X', 'C', 'V', 'B', 'N', 'M', ' ']
+    ['Z', 'X', 'C', 'V', 'B', 'N', 'M'],
+    ['SPACE']
 ]
 
-key_width, key_height = 80, 80
+key_width, key_height = 70, 70
+key_gap = 10
+spacebar_width = 7 * (key_width + key_gap) - key_gap  # Make spacebar span 7 columns
 default_color = (200, 0, 0)
 hover_color = (0, 0, 255)
 press_color = (0, 255, 0)
@@ -40,26 +43,41 @@ def is_fist(landmark, shape):
     (x, y), r = cv2.minEnclosingCircle(points)
     ws = palm_size(landmark, shape)
     circle_ratio = 2 * r / ws
-    return fingers_curled and circle_ratio <= 1.5
+    return fingers_curled and circle_ratio <= 1.4
 
 def draw_keyboard(frame, keys, hover_key=None, pressed_keys=None):
+    y_offset = 10
     for row_idx, row in enumerate(keys):
+        x_offset = 10
         for col_idx, key in enumerate(row):
-            x = col_idx * key_width + 10
-            y = row_idx * key_height + 10
+            if key == "SPACE":
+                width = spacebar_width
+            else:
+                width = key_width
+            x1, y1 = x_offset, y_offset
+            x2, y2 = x1 + width, y1 + key_height
             color = press_color if key in pressed_keys else hover_color if hover_key == key else default_color
-            cv2.rectangle(frame, (x, y), (x + key_width, y + key_height), color, -1)
-            cv2.putText(frame, key, (x + 20, y + 50), cv2.FONT_HERSHEY_SIMPLEX, 1, text_color, 2)
+            cv2.rectangle(frame, (x1, y1), (x2, y2), color, -1)
+            cv2.putText(frame, key, (x1 + 15, y1 + 45), cv2.FONT_HERSHEY_SIMPLEX, 1, text_color, 2)
+            x_offset += width + key_gap
+        y_offset += key_height + key_gap
     return frame
 
 def detect_hover_key(x, y, keys):
+    y_offset = 10
     for row_idx, row in enumerate(keys):
+        x_offset = 10
         for col_idx, key in enumerate(row):
-            x1 = col_idx * key_width + 10
-            y1 = row_idx * key_height + 10
-            x2, y2 = x1 + key_width, y1 + key_height
+            if key == "SPACE":
+                width = spacebar_width
+            else:
+                width = key_width
+            x1, y1 = x_offset, y_offset
+            x2, y2 = x1 + width, y1 + key_height
             if x1 < x < x2 and y1 < y < y2:
                 return key
+            x_offset += width + key_gap
+        y_offset += key_height + key_gap
     return None
 
 cap = cv2.VideoCapture(1)
@@ -82,7 +100,7 @@ cap = cv2.VideoCapture(1)
 #⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⠀⠀⠀⣿⣿⡇⠀⣽⣿⡏⠁⠀ ⠀ ⢸⣿⡇⠀⠀⠀ 
 #⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⠀⠀⠀⣿⣿⡇⠀⢹⣿⡆⠀⠀  ⠀⣸⣿⠇⠀⠀⠀ 
 #⠀⠀⠀⠀⠀⠀⠀⢿⣿⣦⣄⣀⣠⣴⣿⣿⠁⠀⠈⠻⣿⣿⣿⣿⡿⠏⠀⠀⠀⠀ 
-#⠀⠀⠀⠀⠀⠀⠀⠈⠛⠻⠿⠿⠿⠿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+#⠀⠀⠀⠀⠀⠀⠀⠈⠛⠻⠿⠿⠿⠿⠋⠁⠀⠀
 
 try:
     while True:
