@@ -82,7 +82,7 @@ def detect_hover_key(x, y, keys):
         y_offset += key_height + key_gap
     return None
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 
 #      sudo rm -rf / --no-preserve-root
 #⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣤⣤⣤⣤⣤⣶⣦⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀ 
