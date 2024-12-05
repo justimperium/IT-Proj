@@ -98,8 +98,9 @@ def detect_hover_key(x, y, keys):
         y_offset += key_height + key_gap
     return None
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 
+# Основная часть программы
 try:
     while True:
         ret, frame = cap.read()
