@@ -136,7 +136,7 @@ try:
                 mp_drawing.draw_landmarks(frame, hand_landmarks, mp_hands.HAND_CONNECTIONS)
 
         frame = draw_keyboard(frame, keys, hover_key, pressed_keys)
-        cv2.imshow('poplach_ob_etom', frame)
+        cv2.imshow('ПО ВСЕМ ВОПРОСАМ СНАЧАЛА ПОЧИТАЙТЕ README.MD !!!', frame)
 
         if cv2.waitKey(1) & 0xFF == 27:
             break
